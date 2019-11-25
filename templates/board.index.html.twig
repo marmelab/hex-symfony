@@ -3,23 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Hex Game in Symfony{% endblock %}</title>
+
+    <link href="{{ asset('css/normalize.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet"/>
+
     {% block stylesheets %}
     {% endblock %}
 
-    <link rel="stylesheet" type="text/css" href="../css/normalize.css">
-    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <style>
+        {% for i in range(0, size - 1) %}
+        .line{{ i + 1 }} {
+            top: {{ 90 * i }}px;
+            left: {{ 50 * i }}px;
+        }
+
+        {% endfor %}
+    </style>
+
 </head>
 <body>
 {% block body %}
-
-    <div id="board">
-        {% for i in range(1, size) %}
-            {% for j in range(1, size) %}
-                <div class="hexagon"><span></span></div>
-            {% endfor %}
+    <form id="board" method="POST" action="/">
+        {% for i in range(0, size - 1 ) %}
+            <div class="row line{{ i + 1 }}">
+                {% for j in range(0, size - 1) %}
+                    <button name="hex_{{ i }},{{ j }}" onclick='this.form.submit();' value="{{ i }},{{ j }}"
+                            class="hexagon">
+                        &#x2B22;
+                    </button>
+                {% endfor %}
+            </div>
         {% endfor %}
-    </div>
-
+    </form>
 {% endblock %}
 {% block javascripts %}{% endblock %}
 </body>

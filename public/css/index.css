@@ -1,51 +1,41 @@
-/**
- * Based on https://csshexagon.com/
- */
-
 body {
     font-family: 'Open Sans', arial, sans-serif;
     background: #e1f7b7;
+    width: 100%;
 }
 
+button:active, button:focus {
+    outline: 0;
+    border: none;
+    -moz-outline-style: none;
+}
+
+/*IDs*/
 #board {
-    height: 800px;
+    background: transparent;
+    height: auto;
     margin: auto;
-    padding: 2em;
-    width: 50%;
-}
-
-.hexagon {
     position: relative;
-    width: 75px;
-    height: 43.30px;
-    background-color: #007dc5;
-    margin: 21.65px 0;
-    border-left: solid 3px #4e4e4e;
-    border-right: solid 3px #4e4e4e;
+    vertical-align: center;
+    width: 90%;
 }
 
-.hexagon:before,
-.hexagon:after {
-    content: "";
+/*Classes*/
+.hexagon {
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    color: #6C6;
+    display: inline-flex;
+    font-size: 135px;
+    margin: -8px;
+    overflow: hidden;
+    outline:none;
+    width: 112px;
+}
+
+.row {
     position: absolute;
-    z-index: 1;
-    width: 53.03px;
-    height: 53.03px;
-    -webkit-transform: scaleY(0.5774) rotate(-45deg);
-    -ms-transform: scaleY(0.5774) rotate(-45deg);
-    transform: scaleY(0.5774) rotate(-45deg);
-    background-color: inherit;
-    left: 7.9835px;
-}
-
-.hexagon:before {
-    top: -26.5165px;
-    border-top: solid 4.2426px #4e4e4e;
-    border-right: solid 4.2426px #4e4e4e;
-}
-
-.hexagon:after {
-    bottom: -26.5165px;
-    border-bottom: solid 4.2426px #4e4e4e;
-    border-left: solid 4.2426px #4e4e4e;
+    width: 100%;
 }
