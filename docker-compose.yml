@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  php:
+    build: docker/php
+    volumes:
+      - .:/app
+    command: '/usr/local/bin/symfony server:start --port 8080'
+    ports:
+      - 8080:8080
+    env_file: ./.env.local
