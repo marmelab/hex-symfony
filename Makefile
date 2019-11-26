@@ -8,7 +8,9 @@ help:
 install: ## Install project's dependencies
 	docker-compose build
 	docker-compose run --rm \
-        php bash -ci '/usr/local/bin/composer install'
+		php bash -ci '/usr/local/bin/composer install'
+	docker-compose run --rm \
+        php bash -ci '/usr/local/bin/composer update'
 
 start: ## Start project
 	@echo "Start the project"
@@ -19,6 +21,8 @@ stop: ## Stop the server
 
 test: ## Launch the project's tests
 	@echo "Launch the tests"
+	docker-compose run --rm \
+		php bash -ci './vendor/bin/simple-phpunit'
 
 clean: ## Clean unused objects
 	docker-compose rm -f

@@ -20,7 +20,6 @@ class BoardController extends AbstractController
     public function index(Request $request)
     {
         $board = new Board(5);
-
         return $this->render('board.index.html.twig', ['size' => $board->getSize()]);
     }
 }
