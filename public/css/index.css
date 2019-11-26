@@ -1,0 +1,41 @@
+body {
+    font-family: 'Open Sans', arial, sans-serif;
+    background: #e1f7b7;
+    width: 100%;
+}
+
+button:active, button:focus {
+    outline: 0;
+    border: none;
+    -moz-outline-style: none;
+}
+
+/*IDs*/
+#board {
+    background: transparent;
+    height: auto;
+    margin: auto;
+    position: relative;
+    vertical-align: center;
+    width: 90%;
+}
+
+/*Classes*/
+.hexagon {
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    color: #6C6;
+    display: inline-flex;
+    font-size: 135px;
+    margin: -8px;
+    overflow: hidden;
+    outline:none;
+    width: 112px;
+}
+
+.row {
+    position: absolute;
+    width: 100%;
+}
