@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Entity;
-
+namespace Hex;
 
 /**
  * Class Board
- * @package App\Entity
+ * @package Hex\Models
  */
 class Board
 {
@@ -18,7 +17,7 @@ class Board
     /**
      * @var array
      */
-    protected $stones_1 = [];
+    protected $stones = [];
 
     /**
      * Board constructor.
@@ -48,17 +47,17 @@ class Board
     /**
      * @return array
      */
-    public function getStones1(): array
+    public function getStones(): array
     {
-        return $this->stones_1;
+        return $this->stones;
     }
 
     /**
-     * @param array $stones_1
+     * @param array $stones
      */
-    public function setStones1(array $stones_1): void
+    public function setStones(array $stones): void
     {
-        $this->stones_1 = $stones_1;
+        $this->stones = $stones;
     }
 
     /**
@@ -66,10 +65,10 @@ class Board
      * @param int $y
      * @return bool
      */
-    public function hasStone1(int $x, int $y): bool
+    public function hasStone(int $x, int $y): bool
     {
-        return !empty(array_filter($this->stones_1, function (Stone $stone) use ($x, $y){
-            return $stone->x == $x && $stone->y == $y;
+        return !empty(array_filter($this->stones, function (Stone $stone) use ($x, $y){
+            return $stone->getX() == $x && $stone->getY() == $y;
         }));
     }
 

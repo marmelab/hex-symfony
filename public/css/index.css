@@ -23,17 +23,26 @@ button:active, button:focus {
 /*Classes*/
 .hexagon {
     background-color: transparent;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     border: none;
-    cursor:pointer;
+    cursor: pointer;
     color: #6C6;
     display: inline-flex;
-    font-size: 135px;
+    font-size: 110px;
     margin: -8px;
     overflow: hidden;
-    outline:none;
+    outline: none;
     width: 112px;
 }
+
+.hexagon:hover {
+    color: lightseagreen;
+}
+
+.player_1 {
+    color: dodgerblue;
+}
+
 
 .row {
     position: absolute;
