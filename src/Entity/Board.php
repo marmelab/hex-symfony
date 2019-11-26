@@ -2,61 +2,79 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Hex\Board as BaseBoard;
 
 /**
+ * Class Board
+ * @package App\Entity
+ *
+ * @ORM\Entity(repositoryClass="App\Repository\BoardRepository")
  */
-class Board
+class Board extends BaseBoard
 {
 
+
     /**
-     * @var int
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    protected $stones = [];
+
+    /**
+     * @ORM\Column(type="integer")
      */
     protected $size;
 
     /**
-     * @var array
+     * @return int|null
      */
-    protected $stones;
-
-    /**
-     * Board constructor.
-     * @param int $size
-     */
-    public function __construct(int $size)
+    public function getId(): ?int
     {
-        $this->size = $size;
+        return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return array|null
      */
-    public function getSize()
-    {
-        return $this->size;
-    }
-
-    /**
-     * @param mixed $size
-     */
-    public function setSize($size): void
-    {
-        $this->size = $size;
-    }
-
-    /**
-     * @return array
-     */
-    public function getStones(): array
+    public function getStones(): ?array
     {
         return $this->stones;
     }
 
     /**
      * @param array $stones
+     * @return $this
      */
-    public function setStones(array $stones): void
+    public function setStones(array $stones): self
     {
         $this->stones = $stones;
+
+        return $this;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param int $size
+     * @return $this
+     */
+    public function setSize(int $size): self
+    {
+        $this->size = $size;
+
+        return $this;
+    }
 }

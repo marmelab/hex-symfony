@@ -1,3 +1,6 @@
-index:
+index_board:
     path: /
-    controller: App\Controller\BoardController::index
+    controller: App\Controller\HexController::index
+get_board:
+    path: /boards/{id}
+    controller: App\Controller\BoardController::show
