@@ -16,7 +16,7 @@ class Game
 
     protected $id;
 
-    protected $stones;
+    protected $stones = [];
 
     protected $size;
 
@@ -25,13 +25,20 @@ class Game
     /**
      * Game constructor.
      * @param $size
-     * @param $allowed_players
      */
-    public function __construct($size, $allowed_players)
+    public function __construct($size)
     {
         $this->size = $size;
+        $this->allowed_players = [];
         $this->stones = [];
-        $this->allowed_players = $allowed_players;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasEnoughPlayer(): bool
+    {
+        return 2 === count($this->getAllowedPlayers());
     }
 
     /**
@@ -120,11 +127,19 @@ class Game
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getAllowedPlayers()
+    public function getAllowedPlayers(): array
     {
         return $this->allowed_players;
+    }
+
+    /**
+     * @param string $player
+     */
+    public function addPlayer(string $player): void
+    {
+        $this->allowed_players[] = $player;
     }
 
     /**

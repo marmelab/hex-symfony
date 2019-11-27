@@ -14,6 +14,11 @@
 </head>
 <body>
 {% block body %}
+    <div style="float: right;margin: 100px">
+        <form method="POST" action="/games/{{ game.id }}/join">
+            <button id="submit_board" type="submit" value="Join this game">Join</button>
+        </form>
+    </div>
 
     <div class="wrapper">
         <main>

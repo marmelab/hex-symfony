@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Entity\Game;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class GameManager
@@ -21,12 +20,11 @@ class GameManager
     }
 
     /**
-     * @param array $players
      * @return Game
      */
-    public function createGame(array $players)
+    public function createGame()
     {
-        $game = new Game(Game::BOARD_MINI_SIZE, $players);
+        $game = new Game(Game::BOARD_MINI_SIZE);
 
         $this->em->persist($game);
         $this->em->flush();
@@ -40,7 +38,7 @@ class GameManager
      * @param string $player
      * @return Game
      */
-    public function addStoneFromCoordonates(Game $game, array $coords, string $player )
+    public function addStoneFromCoordonates(Game $game, array $coords, string $player)
     {
         $game->addStone($coords['x'], $coords['y'], $player);
 

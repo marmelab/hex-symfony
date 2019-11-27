@@ -6,6 +6,7 @@ use App\Entity\Game;
 use App\Services\GameManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -32,16 +33,37 @@ class GameController extends AbstractController
      */
     public function new(GameManager $gm, Request $request)
     {
-        $time = time();
+        $game = $gm->createGame();
 
-        $players = [
-            'p1' => hash('sha256', 'P1' . $time, false),
-            'p2' => hash('sha256', 'P2' . $time, false),
-        ];
-        $game = $gm->createGame($players);
+        $player = $this->associatePlayerToGame();
+        if ($game->hasEnoughPlayer()) {
+            $game->addPlayer($player);
+        }
 
         $response = $this->redirectToRoute('show_game', ['id' => $game->getId()]);
-        $response->headers->setCookie(new Cookie('p', base64_encode(json_encode($players['p1']))));
+        $response->headers->setCookie(new Cookie('p', base64_encode($player)));
+
+        return $response;
+    }
+
+    protected function associatePlayerToGame()
+    {
+        return hash('sha256', uniqid(), false);
+    }
+
+    /**
+     * @param Game $game
+     * @return RedirectResponse
+     */
+    public function join(Game $game)
+    {
+        $player = $this->associatePlayerToGame();
+        if ($game->hasEnoughPlayer()) {
+            $game->addPlayer($player);
+        }
+
+        $response = $this->redirectToRoute('show_game', ['id' => $game->getId()]);
+        $response->headers->setCookie(new Cookie('p', base64_encode($player)));
 
         return $response;
     }
@@ -61,7 +83,6 @@ class GameController extends AbstractController
         return $this->redirectToRoute('show_game', ['id' => $game->getId()]);
     }
 
-
     /**
      * @param Game $game
      * @return Response
@@ -70,5 +91,6 @@ class GameController extends AbstractController
     {
         return $this->render('game/game.html.twig', ['game' => $game]);
     }
+
 
 }
