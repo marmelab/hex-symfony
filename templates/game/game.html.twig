@@ -13,10 +13,11 @@
 
 </head>
 <body>
+
 {% block body %}
-    <div style="float: right;margin: 100px">
+    <div class="join_card" >
         <form method="POST" action="/games/{{ game.id }}/join">
-            <button id="submit_board" type="submit" value="Join this game">Join</button>
+            <button class="main_button" type="submit" value="Join this game">Join</button>
         </form>
     </div>
 
@@ -39,9 +40,7 @@
 
                             {% set class = '' %}
                             {% if game.hasStone(x, y) %}
-                                {% set class = 'player_1' %}
-                            {% elseif game.hasStone(x, y) %}
-                                {% set class = 'player_2' %}
+                                {% set class = game.stones[[x,y]]['player'] %}
                             {% endif %}
 
                             <button name="stone"

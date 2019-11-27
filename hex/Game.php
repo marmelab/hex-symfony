@@ -54,8 +54,9 @@ class Game
     }
 
     /**
-     * @param $x
-     * @param $y
+     * @param int $x
+     * @param int $y
+     * @param $player
      */
     public function addStone(int $x, int $y, $player)
     {
@@ -65,7 +66,7 @@ class Game
         $xIsInside = $x >= $limitMin && $x <= $limitMax;
         $yIsInside = $y >= $limitMin && $y <= $limitMax;
         $alreadyPlayedMove = in_array([$x, $y], $this->stones);
-        $isAllowedPlayer = in_array($player, $this->allowed_players);
+        $isAllowedPlayer = in_array($player, $this->getAllowedPlayers());
 
         if ($xIsInside && $yIsInside && !$alreadyPlayedMove && $isAllowedPlayer) {
             $this->stones[] = ['x' => $x, 'y' => $y, 'player' => $player];
