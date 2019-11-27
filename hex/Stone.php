@@ -2,9 +2,8 @@
 
 namespace Hex;
 
-
 /**
- * Class Stone
+ * Class Game
  * @package App
  */
 class Stone
@@ -15,9 +14,9 @@ class Stone
     protected $x;
 
     /**
-     * @var int
+     * @var Player
      */
-    protected $playerId;
+    protected $player;
 
     /**
      * @var int
@@ -25,69 +24,69 @@ class Stone
     protected $y;
 
     /**
-     * Stone constructor.
-     * @param $x
-     * @param $y
-     * @param $playerId
+     * Game constructor.
+     * @param int $x
+     * @param Player $player
+     * @param int $y
      */
-    public function __construct($x, $y, $playerId)
+    public function __construct(int $x, int $y, Player $player)
     {
         $this->x = $x;
+        $this->player = $player;
         $this->y = $y;
-        $this->playerId = $playerId;
     }
 
-    /**
-     * @return int
-     */
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getX(): int
     {
         return $this->x;
     }
 
-    /**
-     * @param int $x
-     * @return Stone
-     */
-    public function setX(int $x): Stone
+    public function setX(int $x): self
     {
         $this->x = $x;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getPlayerId(): int
-    {
-        return $this->playerId;
-    }
-
-    /**
-     * @param int $playerId
-     * @return Stone
-     */
-    public function setPlayerId(int $playerId): Stone
-    {
-        $this->playerId = $playerId;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
     public function getY(): int
     {
         return $this->y;
     }
 
-    /**
-     * @param int $y
-     * @return Stone
-     */
-    public function setY(int $y): Stone
+    public function setY(int $y): self
     {
         $this->y = $y;
+
+        return $this;
+    }
+
+    public function getPlayer(): ?Player
+    {
+        return $this->player;
+    }
+
+    public function setPlayer(?Player $player): self
+    {
+        $this->player = $player;
+
+        return $this;
+    }
+
+    public function getBoard(): ?Board
+    {
+        return $this->board;
+    }
+
+    public function setBoard(?Board $board): self
+    {
+        $this->board = $board;
+
         return $this;
     }
 

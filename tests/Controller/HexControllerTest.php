@@ -5,10 +5,10 @@ namespace App\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class BoardControllerTest
+ * Class HexControllerTest
  * @package App\Tests\Controller
  */
-class BoardControllerTest extends WebTestCase
+class HexControllerTest extends WebTestCase
 {
 
     /**

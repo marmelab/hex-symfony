@@ -1,6 +1,6 @@
 body {
-    font-family: 'Open Sans', arial, sans-serif;
     background: #e1f7b7;
+    font-family: 'Open Sans', arial, sans-serif;
     height: 100%;
     width: 100%;
 }
@@ -11,32 +11,25 @@ button:active, button:focus {
     -moz-outline-style: none;
 }
 
-/*Template*/
-#page {
+.wrapper{
     display: grid;
-    width: 100%;
-    height: 200px;
-    grid-template: [main-left]   "nav  main" 1fr  [main-right]
-}
-
-header {
-    background-color: lime;
-    grid-area: head;
+    grid-template-columns: 20% 80%;
 }
 
 nav {
-    background-color: lightblue;
-    grid-area: nav;
+    background-color: white;
+}
+
+#create_board{
+    display: flex;
+}
+
+#submit_board{
 }
 
 main {
-    background-color: yellow;
-    grid-area: main;
+
 }
-
-
-/*IDs*/
-
 
 
 #board {

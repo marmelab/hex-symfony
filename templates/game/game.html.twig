@@ -15,11 +15,10 @@
 <body>
 {% block body %}
 
-    <nav>Navigation</nav>
-    <main>
-        {% if board is defined %}
+    <div class="wrapper">
+        <main>
             <style>
-                {% for x in range(0, board.size - 1) %}
+                {% for x in range(0, game.size - 1) %}
                 .line{{ x + 1 }} {
                     top: {{ 90 * x }}px;
                     left: {{ 50 * x }}px;
@@ -28,19 +27,18 @@
                 {% endfor %}
             </style>
 
-            <form id="board" method="POST" action="/">
-                {% for x in range(0, board.size - 1 ) %}
+            <form id="game" method="POST" action="/games/{{ game.id }}">
+                {% for x in range(0, game.size - 1 ) %}
                     <div class="row line{{ x + 1 }}">
-                        {% for y in range(0, board.size - 1) %}
+                        {% for y in range(0, game.size - 1) %}
 
                             {% set class = '' %}
-                            {% if board.hasStone(x, y) %}
-                                <input name="{{ x }},{{ y }}" type="hidden" value="{{ x }},{{ y }}">
+                            {% if game.hasStone(x, y) %}
                                 {% set class = 'player_1' %}
                             {% endif %}
 
                             <button name="{{ x }},{{ y }}"
-                                    onclick='this.form.submit();'
+                                    type="submit"
                                     value="{{ x }},{{ y }}"
                                     class="hexagon {{ class }}"
                             >
@@ -50,9 +48,8 @@
                     </div>
                 {% endfor %}
             </form>
-        {% endif %}
-    </main>
-
+        </main>
+    </div>
 {% endblock %}
 {% block javascripts %}{% endblock %}
 </body>
