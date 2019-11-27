@@ -46,17 +46,17 @@ class Game
      * @param $x
      * @param $y
      */
-    public function addStone(int $x,int $y)
+    public function addStone(int $x, int $y)
     {
         $limit_min = 0;
         $limit_max = $this->getSize() - 1;
 
-        $x_is_inside = $x >= $limit_min || $x <= $limit_max;
-        $y_is_inside = $y >= $limit_min || $y <= $limit_max;
-        $already_played_move = in_array([$x,$y], $this->stones);
+        $x_is_inside = $x >= $limit_min && $x <= $limit_max;
+        $y_is_inside = $y >= $limit_min && $y <= $limit_max;
+        $already_played_move = in_array([$x, $y], $this->stones);
 
         if ($x_is_inside && $y_is_inside && !$already_played_move) {
-            $this->stones[] = [$x,$y];
+            $this->stones[] = [$x, $y];
         }
     }
 
@@ -99,18 +99,18 @@ class Game
     /**
      * @return mixed
      */
-    public function getBoard()
+    public function getStones()
     {
         return $this->stones;
     }
 
     /**
-     * @param mixed $board
+     * @param mixed $stones
      * @return Game
      */
-    public function setBoard($board)
+    public function setStones($stones)
     {
-        $this->stones = $board;
+        $this->stones = $stones;
         return $this;
     }
 
