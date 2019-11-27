@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Hex Game in Symfony{% endblock %}</title>
+
+    <link href="{{ asset('css/normalize.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet"/>
+
+    {% block stylesheets %}
+    {% endblock %}
+
+
+</head>
+<body>
+{% block body %}
+
+    <div class="wrapper">
+        <main>
+            <style>
+                {% for x in range(0, game.size - 1) %}
+                .line{{ x + 1 }} {
+                    top: {{ 90 * x }}px;
+                    left: {{ 50 * x }}px;
+                }
+
+                {% endfor %}
+            </style>
+
+            <form id="game" method="POST" action="/games/{{ game.id }}">
+                {% for x in range(0, game.size - 1 ) %}
+                    <div class="row line{{ x + 1 }}">
+                        {% for y in range(0, game.size - 1) %}
+
+                            {% set class = '' %}
+                            {% if game.hasStone(x, y) %}
+                                {% set class = 'player_1' %}
+                            {% endif %}
+
+                            <button name="{{ x }},{{ y }}"
+                                    type="submit"
+                                    value="{{ x }},{{ y }}"
+                                    class="hexagon {{ class }}"
+                            >
+                                &#x2B22;
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </form>
+        </main>
+    </div>
+{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>

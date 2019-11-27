@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Hex Game in Symfony{% endblock %}</title>
+
+    <link href="{{ asset('css/normalize.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet"/>
+
+    {% block stylesheets %}
+    {% endblock %}
+
+
+</head>
+<body>
+{% block body %}
+    <div class="wrapper">
+        <nav>
+            <h1>Hex game</h1>
+            <div>
+                <h2>Create a new game</h2>
+                <form method="POST" action="{{ path("create_game") }}">
+                    <button id="submit_board" type="submit" value="Create game">Play !</button>
+                </form>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>

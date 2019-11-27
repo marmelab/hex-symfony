@@ -1,6 +1,7 @@
 body {
-    font-family: 'Open Sans', arial, sans-serif;
     background: #e1f7b7;
+    font-family: 'Open Sans', arial, sans-serif;
+    height: 100%;
     width: 100%;
 }
 
@@ -10,29 +11,49 @@ button:active, button:focus {
     -moz-outline-style: none;
 }
 
-/*IDs*/
+.wrapper{
+    display: grid;
+    grid-template-columns: 20% 80%;
+}
+
+nav {
+    background-color: white;
+}
+
+#create_board{
+    display: flex;
+}
+
 #board {
     background: transparent;
-    height: auto;
+    height: 100%;
     margin: auto;
     position: relative;
     vertical-align: center;
-    width: 90%;
+    width: 100%;
 }
 
 /*Classes*/
 .hexagon {
     background-color: transparent;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     border: none;
-    cursor:pointer;
+    cursor: pointer;
     color: #6C6;
     display: inline-flex;
-    font-size: 135px;
+    font-size: 110px;
     margin: -8px;
     overflow: hidden;
-    outline:none;
+    outline: none;
     width: 112px;
+}
+
+.hexagon:hover {
+    color: lightseagreen;
+}
+
+.player_1 {
+    color: dodgerblue;
 }
 
 .row {
