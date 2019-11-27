@@ -1,6 +1,7 @@
 body {
     font-family: 'Open Sans', arial, sans-serif;
     background: #e1f7b7;
+    height: 100%;
     width: 100%;
 }
 
@@ -10,14 +11,41 @@ button:active, button:focus {
     -moz-outline-style: none;
 }
 
+/*Template*/
+#page {
+    display: grid;
+    width: 100%;
+    height: 200px;
+    grid-template: [main-left]   "nav  main" 1fr  [main-right]
+}
+
+header {
+    background-color: lime;
+    grid-area: head;
+}
+
+nav {
+    background-color: lightblue;
+    grid-area: nav;
+}
+
+main {
+    background-color: yellow;
+    grid-area: main;
+}
+
+
 /*IDs*/
+
+
+
 #board {
     background: transparent;
-    height: auto;
+    height: 100%;
     margin: auto;
     position: relative;
     vertical-align: center;
-    width: 90%;
+    width: 100%;
 }
 
 /*Classes*/

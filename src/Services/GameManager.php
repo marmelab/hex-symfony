@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Entity\Board;
-use App\Entity\Stone;
+use Hex\Stone;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class GameManager
@@ -11,44 +12,19 @@ use App\Entity\Stone;
  */
 class GameManager
 {
-
-    /**
-     * @var Board
-     */
-    protected $board;
-
-    /**
-     * @return $this
-     */
-    public function init()
-    {
-        $this->board = new Board(5);
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBoard()
-    {
-        return $this->board;
-    }
-
     /***
-     * @param $input
+     * @param Request $input
+     * @param Board $board
      * @return GameManager
      */
-    public function addStone($input): GameManager
+    public function loadStoneFromRequest(Request $input, Board $board): GameManager
     {
         $stones = [];
-        foreach ($input as $coords){
+        foreach ($input as $coords) {
             list($x, $y) = explode(',', $coords);
-            $stones[] = new Stone($x, $y);
+            $stones[] = new Stone($x, $y, 0);
         }
 
-        $this->getBoard()->setStones1($stones);
-
-        return $this;
+        return $board;
     }
 }

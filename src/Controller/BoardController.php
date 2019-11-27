@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Services\GameManager;
+use App\Entity\Board;
+use Hex\Board as BaseBoard;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -15,16 +15,19 @@ class BoardController extends AbstractController
 {
 
     /**
-     * @param Request $request
-     * @param GameManager $gameManager
+     * @param int $id
      * @return Response
      */
-    public function index(Request $request, GameManager $gameManager)
+    public function show(int $id)
     {
-        $gameManager
-            ->init()
-            ->addStone($request->request->all());
+        $board = $this->getDoctrine()
+            ->getRepository(Board::class)
+            ->find($id);
 
-        return $this->render('board.index.html.twig', ['board' => $gameManager->getBoard()]);
+        if (!$board) {
+            $board = new Board(BaseBoard::MINI_SIZE);
+        }
+
+        return $this->render('board/board.html.twig', ['board' => $board]);
     }
 }
