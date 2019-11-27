@@ -20,14 +20,18 @@ class Game
 
     protected $size;
 
+    protected $allowed_players;
+
     /**
      * Game constructor.
      * @param $size
+     * @param $allowed_players
      */
-    public function __construct($size)
+    public function __construct($size, $allowed_players)
     {
         $this->size = $size;
         $this->stones = [];
+        $this->allowed_players = $allowed_players;
     }
 
     /**
@@ -38,7 +42,7 @@ class Game
     public function hasStone($x, $y)
     {
         return !empty(array_filter($this->stones, function ($stone) use ($x, $y) {
-            return $x === $stone[0] && $y === $stone[1];
+            return $x === $stone['x'] && $y === $stone['y'];
         }));
     }
 
@@ -46,17 +50,18 @@ class Game
      * @param $x
      * @param $y
      */
-    public function addStone(int $x, int $y)
+    public function addStone(int $x, int $y, $player)
     {
-        $limit_min = 0;
-        $limit_max = $this->getSize() - 1;
+        $limitMin = 0;
+        $limitMax = $this->getSize() - 1;
 
-        $x_is_inside = $x >= $limit_min && $x <= $limit_max;
-        $y_is_inside = $y >= $limit_min && $y <= $limit_max;
-        $already_played_move = in_array([$x, $y], $this->stones);
+        $xIsInside = $x >= $limitMin && $x <= $limitMax;
+        $yIsInside = $y >= $limitMin && $y <= $limitMax;
+        $alreadyPlayedMove = in_array([$x, $y], $this->stones);
+        $isAllowedPlayer = in_array($player, $this->allowed_players);
 
-        if ($x_is_inside && $y_is_inside && !$already_played_move) {
-            $this->stones[] = [$x, $y];
+        if ($xIsInside && $yIsInside && !$alreadyPlayedMove && $isAllowedPlayer) {
+            $this->stones[] = ['x' => $x, 'y' => $y, 'player' => $player];
         }
     }
 
@@ -111,6 +116,25 @@ class Game
     public function setStones($stones)
     {
         $this->stones = $stones;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAllowedPlayers()
+    {
+        return $this->allowed_players;
+    }
+
+    /**
+     * @param mixed $allowed_players
+     * @return Game
+     */
+    public function setAllowedPlayers($allowed_players): Game
+    {
+        $this->allowed_players = $allowed_players;
+
         return $this;
     }
 

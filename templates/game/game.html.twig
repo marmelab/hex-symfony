@@ -35,9 +35,11 @@
                             {% set class = '' %}
                             {% if game.hasStone(x, y) %}
                                 {% set class = 'player_1' %}
+                            {% elseif game.hasStone(x, y) %}
+                                {% set class = 'player_2' %}
                             {% endif %}
 
-                            <button name="{{ x }},{{ y }}"
+                            <button name="stone"
                                     type="submit"
                                     value="{{ x }},{{ y }}"
                                     class="hexagon {{ class }}"

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Services\GameManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,13 +27,23 @@ class GameController extends AbstractController
 
     /**
      * @param GameManager $gm
+     * @param Request $request
      * @return Response
      */
-    public function new(GameManager $gm)
+    public function new(GameManager $gm, Request $request)
     {
-        $game = $gm->createGame();
+        $time = time();
 
-        return $this->redirectToRoute('show_game', ['id' => $game->getId()]);
+        $players = [
+            'p1' => hash('sha256', 'P1' . $time, false),
+            'p2' => hash('sha256', 'P2' . $time, false),
+        ];
+        $game = $gm->createGame($players);
+
+        $response = $this->redirectToRoute('show_game', ['id' => $game->getId()]);
+        $response->headers->setCookie(new Cookie('p', base64_encode(json_encode($players['p1']))));
+
+        return $response;
     }
 
     /**
@@ -43,7 +54,9 @@ class GameController extends AbstractController
      */
     public function putStone(Game $game, Request $request, GameManager $gm)
     {
-        $game = $gm->updateStones($game, $request);
+        list($x, $y) = explode(',', $request->request->get('stone'));
+
+        $game = $gm->addStoneFromCoordonates($game, ['x' => $x, 'y' => $y], 'test2');
 
         return $this->redirectToRoute('show_game', ['id' => $game->getId()]);
     }

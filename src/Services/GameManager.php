@@ -21,11 +21,12 @@ class GameManager
     }
 
     /**
+     * @param array $players
      * @return Game
      */
-    public function createGame()
+    public function createGame(array $players)
     {
-        $game = new Game(Game::BOARD_MINI_SIZE);
+        $game = new Game(Game::BOARD_MINI_SIZE, $players);
 
         $this->em->persist($game);
         $this->em->flush();
@@ -35,14 +36,13 @@ class GameManager
 
     /**
      * @param Game $game
-     * @param Request $request
+     * @param array $coords
+     * @param string $player
      * @return Game
      */
-    public function updateStones(Game $game, Request $request)
+    public function addStoneFromCoordonates(Game $game, array $coords, string $player )
     {
-        list($x, $y) = explode(',', array_key_first($request->request->all()));
-
-        $game->addStone($x, $y);
+        $game->addStone($coords['x'], $coords['y'], $player);
 
         $this->em->persist($game);
         $this->em->flush();
