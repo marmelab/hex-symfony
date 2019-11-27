@@ -1,7 +1,3 @@
-
-#################
-# Game's routes
-#################
 index_game:
   path: /
   controller: App\Controller\GameController::index
