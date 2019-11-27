@@ -28,4 +28,5 @@ test: ## Launch the project's tests
 clean: ## Clean unused objects
 	docker-compose rm -f
 
-#	 php bin/console doctrine:migrations:migrate
+db-migrate: ## Migrate the DB
+	php bin/console doctrine:migrations:migrate

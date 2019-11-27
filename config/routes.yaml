@@ -16,21 +16,6 @@ put_stone_game:
   methods: POST
   controller: App\Controller\GameController::putStone
 
-
 show_game:
   path: /games/{id}
   controller: App\Controller\GameController::show
-
-#add_board:
-#  path: /boards/{id}/stones
-#  methods: POST
-#  controller: App\Controller\StoneController::add
-
-#################
-# Board's routes
-#################
-
-
-
-
-

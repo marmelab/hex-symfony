@@ -24,14 +24,6 @@ nav {
     display: flex;
 }
 
-#submit_board{
-}
-
-main {
-
-}
-
-
 #board {
     background: transparent;
     height: 100%;
@@ -63,7 +55,6 @@ main {
 .player_1 {
     color: dodgerblue;
 }
-
 
 .row {
     position: absolute;
