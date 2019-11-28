@@ -57,12 +57,11 @@ nav {
 }
 
 .player_2 {
-    color: orange;
+    color: sandybrown;
 }
 
 .row {
     position: absolute;
-    width: 100%;
 }
 
 .join_block {

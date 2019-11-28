@@ -17,6 +17,8 @@ class Game
     public const PLAYER_1 = 'player_1';
     public const PLAYER_2 = 'player_2';
 
+    public const AUTHORIZED_NUMBER_OF_PLAYERS = 2;
+
     protected $id;
 
     protected $stones = [];
@@ -62,7 +64,7 @@ class Game
      */
     public function hasEnoughPlayer(): bool
     {
-        return 2 === count($this->getAllowedPlayers());
+        return static::AUTHORIZED_NUMBER_OF_PLAYERS === count($this->getAllowedPlayers());
     }
 
     /**
