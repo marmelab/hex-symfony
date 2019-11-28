@@ -105,6 +105,9 @@
     "ocramius/proxy-manager": {
         "version": "2.2.3"
     },
+    "php-ds/php-ds": {
+        "version": "v1.2.0"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
     },
