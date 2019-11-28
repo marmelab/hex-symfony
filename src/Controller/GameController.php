@@ -35,7 +35,7 @@ class GameController extends AbstractController
     {
         $game = $gameManager->createGame();
 
-        $player = $this->associatePlayerToGame();
+        $player = $this->getPlayerHash();
         $gameManager->addPlayerToGame($game, [Game::PLAYER_1 => $player]);
 
         $response = $this->redirectToRoute('show_game', ['id' => $game->getId()]);
@@ -44,7 +44,7 @@ class GameController extends AbstractController
         return $response;
     }
 
-    protected function associatePlayerToGame()
+    protected function getPlayerHash()
     {
         return hash('sha256', uniqid(), false);
     }
@@ -56,7 +56,7 @@ class GameController extends AbstractController
      */
     public function join(Game $game, GameManager $gameManager)
     {
-        $player = $this->associatePlayerToGame();
+        $player = $this->getPlayerHash();
         $gameManager->addPlayerToGame($game, [Game::PLAYER_2 => $player]);
 
         $response = $this->redirectToRoute('show_game', ['id' => $game->getId()]);

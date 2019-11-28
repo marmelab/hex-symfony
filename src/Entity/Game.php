@@ -23,9 +23,9 @@ class Game extends BaseGame
     protected $stones;
 
     /**
-     * @ORM\Column(type="json", name="allowed_players")
+     * @ORM\Column(type="json", name="players")
      */
-    protected $allowedPlayers;
+    protected $players;
 
     /**
      * @ORM\Column(type="smallint", name="size", options={"default":11})

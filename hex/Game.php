@@ -25,7 +25,7 @@ class Game
 
     protected $size;
 
-    protected $allowedPlayers;
+    protected $players;
 
     protected $currentPlayer;
 
@@ -54,7 +54,7 @@ class Game
     public function __construct($size)
     {
         $this->size = $size;
-        $this->allowedPlayers = [];
+        $this->players = [];
         $this->stones = [];
         $this->currentPlayer = static::PLAYER_1;
     }
@@ -64,7 +64,7 @@ class Game
      */
     public function hasEnoughPlayer(): bool
     {
-        return static::AUTHORIZED_NUMBER_OF_PLAYERS === count($this->getAllowedPlayers());
+        return static::AUTHORIZED_NUMBER_OF_PLAYERS === count($this->getplayers());
     }
 
     /**
@@ -74,9 +74,19 @@ class Game
      */
     public function hasStone($x, $y)
     {
-        return !empty(array_filter($this->stones, function ($stone) use ($x, $y) {
+        return !empty($this->getStoneByCoord($x, $y));
+    }
+
+    /**
+     * @param $x
+     * @param $y
+     * @return array
+     */
+    public function getStoneByCoord($x, $y)
+    {
+        return array_filter($this->stones, function ($stone) use ($x, $y) {
             return $x === $stone['x'] && $y === $stone['y'];
-        }));
+        });
     }
 
     /**
@@ -87,12 +97,10 @@ class Game
     public function getPlayerTypeByCoords($x, $y): string
     {
         $type = '';
-        $stoneArray = array_filter($this->stones, function ($stone) use ($x, $y) {
-            return $x === $stone['x'] && $y === $stone['y'];
-        });
 
-        if ($stoneArray) {
-            $type = array_keys(array_shift($stoneArray)['player'])[0];
+        if ($stone = $this->getStoneByCoord($x, $y)) {
+            $player = array_shift($stone)['player'];
+            $type = array_keys($player)[0];
         }
 
         return $type;
@@ -105,17 +113,13 @@ class Game
      */
     public function addStone(int $x, int $y, $player)
     {
-        $limitMin = 0;
-        $limitMax = $this->getSize() - 1;
+        $isStoneInBounds = $this->isStoneInBounds($x, $y);
 
-        $xIsInside = $x >= $limitMin && $x <= $limitMax;
-        $yIsInside = $y >= $limitMin && $y <= $limitMax;
         $alreadyPlayedMove = in_array([$x, $y], $this->stones);
-        $isAllowedPlayer = in_array($player, $this->getAllowedPlayers());
+        $isAllowedPlayer = in_array($player, $this->getplayers());
 
-        if ($xIsInside && $yIsInside && !$alreadyPlayedMove && $isAllowedPlayer && $this->isCorrectPlayer($player)) {
+        if ($isStoneInBounds && !$alreadyPlayedMove && $isAllowedPlayer && $this->isCorrectPlayer($player)) {
             $this->stones[] = ['x' => $x, 'y' => $y, 'player' => $player];
-            $this->switchPlayer();
         }
     }
 
@@ -126,9 +130,9 @@ class Game
      */
     public function getPlayerWithType($player): array
     {
-        $allowedPlayers = $this->getAllowedPlayers();
+        $players = $this->getplayers();
 
-        $allowedPlayer = array_filter($allowedPlayers, function ($allowedPlayer) use ($player) {
+        $allowedPlayer = array_filter($players, function ($allowedPlayer) use ($player) {
             return in_array($player, $allowedPlayer);
         });
 
@@ -221,9 +225,9 @@ class Game
     /**
      * @return array
      */
-    public function getAllowedPlayers(): array
+    public function getplayers(): array
     {
-        return $this->allowedPlayers;
+        return $this->players;
     }
 
     /**
@@ -231,18 +235,30 @@ class Game
      */
     public function addPlayer(array $player): void
     {
-        $this->allowedPlayers[] = $player;
+        $this->players[] = $player;
     }
 
     /**
-     * @param mixed $allowedPlayers
+     * @param mixed $players
      * @return Game
      */
-    public function setAllowedPlayers($allowedPlayers): Game
+    public function setplayers($players): Game
     {
-        $this->allowedPlayers = $allowedPlayers;
+        $this->players = $players;
 
         return $this;
+    }
+
+    /**
+     * @param int $x
+     * @param int $y
+     * @return bool
+     */
+    public function isStoneInBounds(int $x, int $y): bool
+    {
+        $limitMin = 0;
+        $limitMax = $this->getSize() - 1;
+        return min($x, $y) >= $limitMin && max($x, $y) <= $limitMax;
     }
 
 

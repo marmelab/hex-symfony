@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191128091415 extends AbstractMigration
+final class Version20191128125304 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -23,7 +23,7 @@ final class Version20191128091415 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'sqlite', 'Migration can only be executed safely on \'sqlite\'.');
 
         $this->addSql('CREATE TABLE game (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, stones CLOB NOT NULL --(DC2Type:json)
-        , allowed_players CLOB NOT NULL --(DC2Type:json)
+        , players CLOB NOT NULL --(DC2Type:json)
         , size SMALLINT DEFAULT 11 NOT NULL, current_player VARCHAR(255) NOT NULL)');
     }
 
