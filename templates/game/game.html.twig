@@ -15,14 +15,16 @@
 <body>
 
 {% block body %}
-    <div class="join_card" >
-        <form method="POST" action="/games/{{ game.id }}/join">
-            <button class="main_button" type="submit" value="Join this game">Join</button>
-        </form>
-    </div>
+    <div class="page">
+        <div class="join_block">
+            <form method="POST" action="/games/{{ game.id }}/join">
+                <button class="main_button" type="submit" value="Join this game">Join</button>
+            </form>
+        </div>
 
-    <div class="wrapper">
-        <main>
+        <div class="content">
+
+
             <style>
                 {% for x in range(0, game.size - 1) %}
                 .line{{ x + 1 }} {
@@ -40,7 +42,7 @@
 
                             {% set class = '' %}
                             {% if game.hasStone(x, y) %}
-                                {% set class = game.stones[[x,y]]['player'] %}
+                                {% set class = game.getStone(x,y).player %}
                             {% endif %}
 
                             <button name="stone"
@@ -54,7 +56,7 @@
                     </div>
                 {% endfor %}
             </form>
-        </main>
+        </div>
     </div>
 {% endblock %}
 {% block javascripts %}{% endblock %}

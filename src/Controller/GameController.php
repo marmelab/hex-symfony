@@ -27,18 +27,16 @@ class GameController extends AbstractController
     }
 
     /**
-     * @param GameManager $gm
+     * @param GameManager $gameManager
      * @param Request $request
      * @return Response
      */
-    public function new(GameManager $gm, Request $request)
+    public function new(GameManager $gameManager, Request $request)
     {
-        $game = $gm->createGame();
+        $game = $gameManager->createGame();
 
         $player = $this->associatePlayerToGame();
-        if ($game->hasEnoughPlayer()) {
-            $game->addPlayer($player);
-        }
+        $gameManager->addPlayerToGame($game, [Game::PLAYER_1 => $player]);
 
         $response = $this->redirectToRoute('show_game', ['id' => $game->getId()]);
         $response->headers->setCookie(new Cookie('p', base64_encode($player)));
@@ -53,14 +51,13 @@ class GameController extends AbstractController
 
     /**
      * @param Game $game
+     * @param GameManager $gameManager
      * @return RedirectResponse
      */
-    public function join(Game $game)
+    public function join(Game $game, GameManager $gameManager)
     {
         $player = $this->associatePlayerToGame();
-        if ($game->hasEnoughPlayer()) {
-            $game->addPlayer($player);
-        }
+        $gameManager->addPlayerToGame($game, [Game::PLAYER_2 => $player]);
 
         $response = $this->redirectToRoute('show_game', ['id' => $game->getId()]);
         $response->headers->setCookie(new Cookie('p', base64_encode($player)));
@@ -71,16 +68,23 @@ class GameController extends AbstractController
     /**
      * @param Game $game
      * @param Request $request
-     * @param GameManager $gm
+     * @param GameManager $gameManager
      * @return Response
      */
-    public function putStone(Game $game, Request $request, GameManager $gm)
+    public function putStone(Game $game, Request $request, GameManager $gameManager)
     {
+        $errors = null;
         list($x, $y) = explode(',', $request->request->get('stone'));
 
-        $game = $gm->addStoneFromCoordonates($game, ['x' => $x, 'y' => $y], 'test2');
+        $player = base64_decode($request->cookies->get('p'));
 
-        return $this->redirectToRoute('show_game', ['id' => $game->getId()]);
+        try {
+            $game = $gameManager->addStoneFromCoordonates($game, ['x' => $x, 'y' => $y], $player);
+        } catch (\Exception $exception) {
+            $errors = $exception->getMessage();
+        }
+
+        return $this->redirectToRoute('show_game', ['id' => $game->getId(), 'errors' => $errors]);
     }
 
     /**

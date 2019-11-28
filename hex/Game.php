@@ -14,13 +14,36 @@ class Game
     public const BOARD_DEFAULT_SIZE = 11;
     public const BOARD_LARGE_SIZE = 15;
 
+    public const PLAYER_1 = 'player_1';
+    public const PLAYER_2 = 'player_2';
+
     protected $id;
 
     protected $stones = [];
 
     protected $size;
 
-    protected $allowed_players;
+    protected $allowedPlayers;
+
+    protected $currentPlayer;
+
+    /**
+     * @return string
+     */
+    public function getCurrentPlayer(): string
+    {
+        return $this->currentPlayer;
+    }
+
+    /**
+     * @param string $currentPlayer
+     * @return Game
+     */
+    public function setCurrentPlayer(string $currentPlayer): Game
+    {
+        $this->currentPlayer = $currentPlayer;
+        return $this;
+    }
 
     /**
      * Game constructor.
@@ -29,8 +52,9 @@ class Game
     public function __construct($size)
     {
         $this->size = $size;
-        $this->allowed_players = [];
+        $this->allowedPlayers = [];
         $this->stones = [];
+        $this->currentPlayer = static::PLAYER_1;
     }
 
     /**
@@ -68,9 +92,55 @@ class Game
         $alreadyPlayedMove = in_array([$x, $y], $this->stones);
         $isAllowedPlayer = in_array($player, $this->getAllowedPlayers());
 
-        if ($xIsInside && $yIsInside && !$alreadyPlayedMove && $isAllowedPlayer) {
+        if ($xIsInside && $yIsInside && !$alreadyPlayedMove && $isAllowedPlayer && $this->isCorrectPlayer($player)) {
             $this->stones[] = ['x' => $x, 'y' => $y, 'player' => $player];
+            $this->switchPlayer();
         }
+    }
+
+    /**
+     * @param $player
+     * @return array
+     * @throws \Exception
+     */
+    public function getPlayerWithType($player): array
+    {
+        $allowedPlayers = $this->getAllowedPlayers();
+
+        $allowedPlayer = array_filter($allowedPlayers, function ($allowedPlayer) use ($player) {
+            return in_array($player, $allowedPlayer);
+        });
+
+        if (count($allowedPlayer) === 1) {
+            return array_shift($allowedPlayer);
+        }
+
+        throw new \Exception('Player not found');
+    }
+
+    /**
+     * This function switch the current player.
+     *
+     * @return Game
+     */
+    public function switchPlayer(): Game
+    {
+        if ($this->currentPlayer === static::PLAYER_1)
+            $this->currentPlayer = static::PLAYER_2;
+        else {
+            $this->currentPlayer = static::PLAYER_1;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array $player
+     * @return bool
+     */
+    public function isCorrectPlayer(array $player): bool
+    {
+        return $this->currentPlayer === key($player);
     }
 
     /**
@@ -132,24 +202,24 @@ class Game
      */
     public function getAllowedPlayers(): array
     {
-        return $this->allowed_players;
+        return $this->allowedPlayers;
     }
 
     /**
-     * @param string $player
+     * @param array $player
      */
-    public function addPlayer(string $player): void
+    public function addPlayer(array $player): void
     {
-        $this->allowed_players[] = $player;
+        $this->allowedPlayers[] = $player;
     }
 
     /**
-     * @param mixed $allowed_players
+     * @param mixed $allowedPlayers
      * @return Game
      */
-    public function setAllowedPlayers($allowed_players): Game
+    public function setAllowedPlayers($allowedPlayers): Game
     {
-        $this->allowed_players = $allowed_players;
+        $this->allowedPlayers = $allowedPlayers;
 
         return $this;
     }

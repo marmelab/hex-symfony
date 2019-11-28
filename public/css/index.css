@@ -11,27 +11,27 @@ button:active, button:focus {
     -moz-outline-style: none;
 }
 
-.wrapper {
+.page {
     display: grid;
     grid-template-columns: 20% 80%;
+}
+
+.content {
+    display: block;
 }
 
 nav {
     background-color: white;
 }
 
-
 #create_board {
     display: flex;
 }
 
-#board {
+#game {
+    position: relative;
     background: transparent;
     height: 100%;
-    margin: auto;
-    position: relative;
-    vertical-align: center;
-    width: 100%;
 }
 
 .hexagon {
@@ -61,17 +61,12 @@ nav {
     width: 100%;
 }
 
-.join_card {
-    display: flex;
+.join_block {
     background: darkseagreen;
-    float: right;
     margin: 100px;
     padding: 10px;
-    position: relative
 }
 
 .main_button {
     cursor: pointer;
-    position: absolute;
-    z-index: 999999;
 }
