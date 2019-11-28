@@ -31,22 +31,22 @@ class Graph
     public function hasChain()
     {
         $queue = [$this->connections->get(0)];
+        $connections = $this->connections;
+        $result = new Set();
 
         while ($queue) {
-            /** @var Connection */
-            $path = array_pop($queue);
 
-            $connections = $this->connections;
+            $connection = array_pop($queue);
+            $result[] = $connection->getPoint();
 
-            foreach ($connections->diff($path) as $next) {
-                if ($next == 'end') {
-                    return true;
-                } else {
-                    $set = new Set();
-                    $queue[] = $set->add($next, $path + [$next]);
-                }
+            $connections->remove($connection);
+
+            foreach ($connections as $next) {
+                $queue[] = $next;
             }
         }
+
+        return $result->contains('end');
     }
 
     /**
@@ -107,7 +107,7 @@ class Graph
     public function buildConnection(Game $game, $stone): void
     {
         $connection = (new Connection())->loadWithCoords($stone['x'], $stone['y'], $game);
-        if (null === $connection->getNeighbors()) {
+        if (null !== $connection->getNeighbors()) {
             $this->connections->add($connection);
         }
     }
@@ -139,6 +139,22 @@ class Graph
         $connection = new Connection();
         $connection->loadWithData($point, $neighbors);
         $this->connections->add($connection);
+    }
+
+    /**
+     * @return Set
+     */
+    public function getConnections(): Set
+    {
+        return $this->connections;
+    }
+
+    /**
+     * @param Set $connections
+     */
+    public function setConnections(Set $connections): void
+    {
+        $this->connections = $connections;
     }
 
 

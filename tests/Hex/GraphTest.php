@@ -16,7 +16,7 @@ class GraphTest extends TestCase
 {
 
     /**
-     * @test
+     *
      * @covers ::hasChain
      */
     public function can_determine_if_a_chain_is_present()
@@ -37,6 +37,7 @@ class GraphTest extends TestCase
     }
 
     /**
+     * @test
      * @covers ::hasChain
      */
     public function can_determine_if_a_chain_is_not_present()

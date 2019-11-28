@@ -53,9 +53,9 @@ class Connection
     }
 
     /**
-     * Connection constructor.
      * @param string $point
      * @param Set $neighbors
+     * @return $this
      */
     public function loadWithData(string $point, Set $neighbors)
     {
