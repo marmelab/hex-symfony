@@ -56,6 +56,10 @@ nav {
     color: dodgerblue;
 }
 
+.player_2 {
+    color: orange;
+}
+
 .row {
     position: absolute;
     width: 100%;

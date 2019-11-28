@@ -78,6 +78,25 @@ class Game
     }
 
     /**
+     * @param $x
+     * @param $y
+     * @return string
+     */
+    public function getPlayerTypeByCoords($x, $y): string
+    {
+        $type = '';
+        $stoneArray = array_filter($this->stones, function ($stone) use ($x, $y) {
+            return $x === $stone['x'] && $y === $stone['y'];
+        });
+
+        if ($stoneArray) {
+            $type = array_keys(array_shift($stoneArray)['player'])[0];
+        }
+
+        return $type;
+    }
+
+    /**
      * @param int $x
      * @param int $y
      * @param $player

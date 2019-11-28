@@ -42,7 +42,8 @@
 
                             {% set class = '' %}
                             {% if game.hasStone(x, y) %}
-                                {% set class = game.getStone(x,y).player %}
+                                {% set class = game.getPlayerTypeByCoords(x,y) %}
+
                             {% endif %}
 
                             <button name="stone"
