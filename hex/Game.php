@@ -64,7 +64,7 @@ class Game
      */
     public function hasEnoughPlayer(): bool
     {
-        return static::AUTHORIZED_NUMBER_OF_PLAYERS === count($this->getplayers());
+        return static::AUTHORIZED_NUMBER_OF_PLAYERS === count($this->getPlayers());
     }
 
     /**
@@ -116,7 +116,7 @@ class Game
         $isStoneInBounds = $this->isStoneInBounds($x, $y);
 
         $alreadyPlayedMove = in_array([$x, $y], $this->stones);
-        $isAllowedPlayer = in_array($player, $this->getplayers());
+        $isAllowedPlayer = in_array($player, $this->getPlayers());
 
         if ($isStoneInBounds && !$alreadyPlayedMove && $isAllowedPlayer && $this->isCorrectPlayer($player)) {
             $this->stones[] = ['x' => $x, 'y' => $y, 'player' => $player];
@@ -130,7 +130,7 @@ class Game
      */
     public function getPlayerWithType($player): array
     {
-        $players = $this->getplayers();
+        $players = $this->getPlayers();
 
         $allowedPlayer = array_filter($players, function ($allowedPlayer) use ($player) {
             return in_array($player, $allowedPlayer);
@@ -225,7 +225,7 @@ class Game
     /**
      * @return array
      */
-    public function getplayers(): array
+    public function getPlayers(): array
     {
         return $this->players;
     }
