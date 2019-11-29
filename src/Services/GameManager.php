@@ -70,4 +70,21 @@ class GameManager
         return $game;
     }
 
+    /**
+     * @param array $players
+     * @param string $playerHash
+     * @return string
+     */
+    public function getPlayerType(array $players, string $playerHash): string
+    {
+        $type = 'spectator';
+        foreach ($players as $player) {
+            if (array_search($playerHash, $player)) {
+                $type = str_replace('_', ' ', key($player));
+            }
+        }
+
+        return $type;
+    }
+
 }
