@@ -75,7 +75,6 @@ class GameController extends AbstractController
     {
         $errors = null;
         list($x, $y) = explode(',', $request->request->get('stone'));
-
         $player = base64_decode($request->cookies->get('p'));
 
         try {
@@ -89,11 +88,16 @@ class GameController extends AbstractController
 
     /**
      * @param Game $game
+     * @param Request $request
+     * @param GameManager $gameManager
      * @return Response
      */
-    public function show(Game $game)
+    public function show(Game $game, Request $request, GameManager $gameManager)
     {
-        return $this->render('game/game.html.twig', ['game' => $game]);
+        $playerHash = base64_decode($request->cookies->get('p'));
+        $player = $gameManager->getPlayerType($game->getPlayers(), $playerHash);
+
+        return $this->render('game/game.html.twig', ['game' => $game, 'player' => $player]);
     }
 
 
