@@ -23,7 +23,7 @@ class GameTest extends TestCase
     {
         $game = new Game(Game::BOARD_MINI_SIZE);
 
-        $this->assertTrue($game->isStoneInBounds(-1, 2));
+        $this->assertFalse($game->isStoneInBounds(-1, 2));
         $this->assertFalse($game->isStoneInBounds(10, 1));
     }
 
