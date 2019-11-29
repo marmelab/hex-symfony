@@ -11,29 +11,29 @@ button:active, button:focus {
     -moz-outline-style: none;
 }
 
-.wrapper{
+.page {
     display: grid;
     grid-template-columns: 20% 80%;
+}
+
+.content {
+    display: block;
 }
 
 nav {
     background-color: white;
 }
 
-#create_board{
+#create_board {
     display: flex;
 }
 
-#board {
+#game {
+    position: relative;
     background: transparent;
     height: 100%;
-    margin: auto;
-    position: relative;
-    vertical-align: center;
-    width: 100%;
 }
 
-/*Classes*/
 .hexagon {
     background-color: transparent;
     background-repeat: no-repeat;
@@ -56,7 +56,20 @@ nav {
     color: dodgerblue;
 }
 
+.player_2 {
+    color: sandybrown;
+}
+
 .row {
     position: absolute;
-    width: 100%;
+}
+
+.join_block {
+    background: darkseagreen;
+    margin: 100px;
+    padding: 10px;
+}
+
+.main_button {
+    cursor: pointer;
 }

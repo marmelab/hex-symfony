@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Entity\Game;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class GameManager
@@ -35,14 +34,34 @@ class GameManager
 
     /**
      * @param Game $game
-     * @param Request $request
+     * @param array $coords
+     * @param string $player
+     * @return Game
+     * @throws \Exception
+     */
+    public function addStoneFromCoordonates(Game $game, array $coords, string $player)
+    {
+        $playerWithRole = $game->getPlayerWithType($player);
+
+        $game->addStone($coords['x'], $coords['y'], $playerWithRole);
+        $game->switchPlayer();
+
+        $this->em->persist($game);
+        $this->em->flush();
+
+        return $game;
+    }
+
+    /**
+     * @param Game $game
+     * @param array $player
      * @return Game
      */
-    public function updateStones(Game $game, Request $request)
+    public function addPlayerToGame(Game $game, array $player)
     {
-        list($x, $y) = explode(',', array_key_first($request->request->all()));
-
-        $game->addStone($x, $y);
+        if (!$game->hasEnoughPlayer()) {
+            $game->addPlayer($player);
+        }
 
         $this->em->persist($game);
         $this->em->flush();
