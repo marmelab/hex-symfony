@@ -110,8 +110,9 @@ class Game
      * @param int $x
      * @param int $y
      * @param $player
+     * @return bool
      */
-    public function addStone(int $x, int $y, $player)
+    public function addStone(int $x, int $y, $player): bool
     {
         $isStoneInBounds = $this->isStoneInBounds($x, $y);
 
@@ -120,7 +121,11 @@ class Game
 
         if ($isStoneInBounds && !$alreadyPlayedMove && $isAllowedPlayer && $this->isCorrectPlayer($player)) {
             $this->stones[] = ['x' => $x, 'y' => $y, 'player' => $player];
+
+            return true;
         }
+
+        return false;
     }
 
     /**

@@ -43,8 +43,9 @@ class GameManager
     {
         $playerWithRole = $game->getPlayerWithType($player);
 
-        $game->addStone($coords['x'], $coords['y'], $playerWithRole);
-        $game->switchPlayer();
+        if($game->addStone($coords['x'], $coords['y'], $playerWithRole)){
+            $game->switchPlayer();
+        }
 
         $this->em->persist($game);
         $this->em->flush();
