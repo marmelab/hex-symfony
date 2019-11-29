@@ -65,9 +65,12 @@ nav {
 }
 
 .join_block {
-    background: darkseagreen;
     margin: 100px;
     padding: 10px;
+}
+
+.player_block{
+    background: white;
 }
 
 .main_button {
