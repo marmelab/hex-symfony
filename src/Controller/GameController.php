@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Services\GameManager;
+use Hex\Graph;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -83,7 +84,12 @@ class GameController extends AbstractController
             $errors = $exception->getMessage();
         }
 
-        return $this->redirectToRoute('show_game', ['id' => $game->getId(), 'errors' => $errors]);
+        $graph = new Graph();
+        $isWin = $graph->hasChain($game);
+
+        dd($isWin);
+
+        return $this->redirectToRoute('show_game', ['id' => $game->getId(), 'errors' => $errors, 'is_win' => $isWin]);
     }
 
     /**

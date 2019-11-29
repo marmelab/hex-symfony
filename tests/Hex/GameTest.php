@@ -27,5 +27,4 @@ class GameTest extends TestCase
         $this->assertFalse($game->isStoneInBounds(10, 1));
     }
 
-
 }

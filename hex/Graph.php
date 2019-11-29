@@ -10,6 +10,8 @@ use Ds\Set;
  */
 class Graph
 {
+    public const DIRECTIONS = [[-1, -1], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0]];
+    public const STRING_FORMAT = '%s,%s';
 
     /**
      * @var Set
@@ -25,25 +27,54 @@ class Graph
     }
 
     /**
+     * @param $x
+     * @param $y
+     * @param Game $game
+     * @return array
+     */
+    public function loadNeighbors($x, $y, Game $game)
+    {
+        $neighbors = [];
+        foreach (static::DIRECTIONS as $direction) {
+            $xNeighbor = $x - $direction[0];
+            $yNeighbor = $y - $direction[1];
+
+            if ($game->hasStone($xNeighbor, $yNeighbor)) {
+                $neighbors[] = sprintf(static::STRING_FORMAT, $xNeighbor, $yNeighbor);
+            }
+        }
+        return $neighbors;
+    }
+
+    /**
      * This function returns a boolean who determine is the start and the end point can be reach
      * Source : https://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/
+     *
+     * @param Game $game
+     * @return bool
      */
-    public function hasChain()
+    public function hasChain(Game $game)
     {
-        $queue = [$this->connections->get(0)];
-        $connections = $this->connections;
+        $start = $this->getStartNeighbors($game->getSize() - 1);
+
+        $queue = [$start];
         $result = new Set();
 
         while ($queue) {
 
             $connection = array_pop($queue);
-            $result[] = $connection->getPoint();
 
-            $connections->remove($connection);
+            $key = array_key_first($connection);
 
-            foreach ($connections as $next) {
-                $queue[] = $next;
+            foreach ($connection[$key] as $neigbor) {
+                list($x, $y) = explode(',', $neigbor, 2);
+                $neigbors = $this->loadNeighbors((int)$x, (int)$y, $game);
+
+                if($neigbors){
+                    $queue[] = $connection;
+                }
             }
+
         }
 
         return $result->contains('end');
@@ -74,13 +105,12 @@ class Graph
      */
     public function getStartNeighbors(int $size)
     {
-        $set = new Set();
-
+        $neighbors = [];
         foreach (range(0, $size - 1) as $i) {
-            $set->add(sprintf('0,%s', $i));
+            $neighbors[] = (sprintf('0,%s', $i));
         }
 
-        return $set;
+        return ['start' => $neighbors];
     }
 
     /**

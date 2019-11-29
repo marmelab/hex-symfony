@@ -51,9 +51,8 @@ class GraphTest extends TestCase
         ]);
 
         $graph = new Graph();
-        $graph->loadFromGame($game);
 
-        $this->assertFalse($graph->hasChain());
+        $this->assertFalse($graph->hasChain($game));
     }
 
     /**
