@@ -17,21 +17,20 @@
 {% block body %}
     <div class="page">
 
-        {% if not game.hasEnoughPlayer() %}
-        <div class="join_block">
-            <form method="POST" action="/games/{{ game.id }}/join">
-                <button class="main_button" type="submit" value="Join this game">Join</button>
-            </form>
-        </div>
-        {% else %}
+        {% if player is defined and player != 'spectator' %}
             <div class="player_block">
-                {% if player == 'spectator' %}
-                    <h3>You're {{ player }}</h3>
-                {% else %}
-                    <h3>You play as {{ player }}</h3>
-                {% endif %}
-
+                <h3>You play as {{ player }}</h3>
             </div>
+        {% elseif not game.hasEnoughPlayer() %}
+            <div class="join_block">
+                <form method="POST" action="/games/{{ game.id }}/join">
+                    <button class="main_button" type="submit" value="Join this game">Join</button>
+                </form>
+            </div>
+            {% else %}
+                <div class="player_block">
+                    <h3>You're {{ player }}</h3>
+                </div>
         {% endif %}
 
         <div class="content">

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191128125304 extends AbstractMigration
+final class Version20191201214819 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -24,7 +24,7 @@ final class Version20191128125304 extends AbstractMigration
 
         $this->addSql('CREATE TABLE game (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, stones CLOB NOT NULL --(DC2Type:json)
         , players CLOB NOT NULL --(DC2Type:json)
-        , size SMALLINT DEFAULT 11 NOT NULL, current_player VARCHAR(255) NOT NULL)');
+        , size SMALLINT DEFAULT 11 NOT NULL, current_player VARCHAR(255) NOT NULL, won_by VARCHAR(255) DEFAULT NULL)');
     }
 
     public function down(Schema $schema) : void

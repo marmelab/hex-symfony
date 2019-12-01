@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\Game;
 use Doctrine\ORM\EntityManagerInterface;
+use Hex\Graph;
 
 /**
  * Class GameManager
@@ -33,6 +34,29 @@ class GameManager
     }
 
     /**
+     * In this function, we'll check for the current player if the game is won for him.
+     *
+     * @param Game $game
+     * @return Game
+     */
+    public function checkGame(Game $game): ?string
+    {
+        $graph = new Graph();
+
+        $wonBy = $graph->hasChain($game);
+
+        if ($wonBy) {
+            $game->setWonBy($wonBy);
+
+            $this->em->persist($game);
+            $this->em->flush();
+
+        }
+
+        return $wonBy;
+    }
+
+    /**
      * @param Game $game
      * @param array $coords
      * @param string $player
@@ -43,7 +67,7 @@ class GameManager
     {
         $playerWithRole = $game->getPlayerWithType($player);
 
-        if($game->addStone($coords['x'], $coords['y'], $playerWithRole)){
+        if ($game->addStone($coords['x'], $coords['y'], $playerWithRole)) {
             $game->switchPlayer();
         }
 

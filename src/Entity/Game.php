@@ -36,4 +36,9 @@ class Game extends BaseGame
      * @ORM\Column(type="string", name="current_player")
      */
     protected $currentPlayer;
+    
+    /**
+     * @ORM\Column(type="string", name="won_by", nullable=true)
+     */
+    protected $wonBy;
 }

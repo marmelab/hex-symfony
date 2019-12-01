@@ -84,12 +84,9 @@ class GameController extends AbstractController
             $errors = $exception->getMessage();
         }
 
-        $graph = new Graph();
-        $isWin = $graph->hasChain($game);
+        $wonBy = $gameManager->checkGame($game);
 
-        dd($isWin);
-
-        return $this->redirectToRoute('show_game', ['id' => $game->getId(), 'errors' => $errors, 'is_win' => $isWin]);
+        return $this->redirectToRoute('show_game', ['id' => $game->getId(), 'errors' => $errors, 'won_by' => $wonBy]);
     }
 
     /**

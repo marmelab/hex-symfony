@@ -29,6 +29,8 @@ class Game
 
     protected $currentPlayer;
 
+    protected $wonBy;
+
     /**
      * @return string
      */
@@ -57,6 +59,27 @@ class Game
         $this->players = [];
         $this->stones = [];
         $this->currentPlayer = static::PLAYER_1;
+    }
+
+    /**
+     * @param int $x
+     * @param int $y
+     * @return bool
+     */
+    public function isStoneOwnedByCurrentPlayer(int $x, int $y): bool
+    {
+        return $this->getPlayerTypeByCoords($x, $y) === $this->getCurrentPlayer();
+    }
+
+    /***
+     * @param string $playerType
+     * @return array
+     */
+    public function getStonesByPlayerTypes(string $playerType): array
+    {
+        return array_values(array_filter($this->stones, function ($stone) use ($playerType) {
+            return $stone['player'] === $playerType;
+        }));
     }
 
     /**
@@ -97,12 +120,9 @@ class Game
     public function getPlayerTypeByCoords($x, $y): string
     {
         $type = '';
-
-        if ($stone = $this->getStoneByCoord($x, $y)) {
-            $player = array_shift($stone)['player'];
-            $type = array_keys($player)[0];
+        if ($this->isStoneInBounds($x, $y) && $stone = $this->getStoneByCoord($x, $y)) {
+            $type = array_values($stone)[0]['player'];
         }
-
         return $type;
     }
 
@@ -264,6 +284,22 @@ class Game
         $limitMin = 0;
         $limitMax = $this->getSize() - 1;
         return min($x, $y) >= $limitMin && max($x, $y) <= $limitMax;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWonBy()
+    {
+        return $this->wonBy;
+    }
+
+    /**
+     * @param mixed $wonBy
+     */
+    public function setWonBy($wonBy): void
+    {
+        $this->wonBy = $wonBy;
     }
 
 

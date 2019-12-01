@@ -10,7 +10,7 @@ use Ds\Set;
  */
 class Graph
 {
-    public const DIRECTIONS = [[-1, -1], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0]];
+    public const DIRECTIONS = [[-1, -1], [-1, 1], [0, -1], [0, 1], [1, 1], [1, 0]];
     public const STRING_FORMAT = '%s,%s';
 
     /**
@@ -36,10 +36,10 @@ class Graph
     {
         $neighbors = [];
         foreach (static::DIRECTIONS as $direction) {
-            $xNeighbor = $x - $direction[0];
-            $yNeighbor = $y - $direction[1];
+            $xNeighbor = $x + $direction[0];
+            $yNeighbor = $y + $direction[1];
 
-            if ($game->hasStone($xNeighbor, $yNeighbor)) {
+            if ($game->isStoneOwnedByCurrentPlayer($xNeighbor, $yNeighbor)) {
                 $neighbors[] = sprintf(static::STRING_FORMAT, $xNeighbor, $yNeighbor);
             }
         }
@@ -50,64 +50,60 @@ class Graph
      * This function returns a boolean who determine is the start and the end point can be reach
      * Source : https://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/
      *
+     * Considers :
+     * start --> 0,0 --> 1,0 --> 2,1 --> etc... --> end
+     *
      * @param Game $game
      * @return bool
      */
     public function hasChain(Game $game)
     {
-        $start = $this->getStartNeighbors($game->getSize() - 1);
+        $start = $this->getStartNeighbors($game);
+        $end = $this->getEndNeighbors($game);
 
         $queue = [$start];
         $result = new Set();
 
         while ($queue) {
 
-            $connection = array_pop($queue);
+            $node = array_pop($queue);
+            $key = key($node);
 
-            $key = array_key_first($connection);
+            $result->add($key);
 
-            foreach ($connection[$key] as $neigbor) {
-                list($x, $y) = explode(',', $neigbor, 2);
-                $neigbors = $this->loadNeighbors((int)$x, (int)$y, $game);
+            foreach (array_values($node[$key]) as $neighbor) {
 
-                if($neigbors){
-                    $queue[] = $connection;
+                list($x, $y) = array_map('intval', explode(',', $neighbor, 2));
+
+                if ($game->isStoneOwnedByCurrentPlayer($x, $y)) {
+
+                    $neighbors = $this->loadNeighbors($x, $y, $game);
+
+                    if (key($end) === $neighbor) {
+                        return $game->getCurrentPlayer();
+                    }
+
+                    if ($neighbors) {
+                        $queue[] = [$neighbor => $neighbors];
+                    }
                 }
             }
-
         }
-
-        return $result->contains('end');
-    }
-
-    /**
-     * @param Game $game
-     */
-    public function loadFromGame(Game $game)
-    {
-        $size = $game->getSize();
-
-        $this->buildStartConnection($size);
-
-        $stones = $game->getStones();
-        foreach ($stones as $stone) {
-            $this->buildConnection($game, $stone);
-        }
-
-        $this->buildEndConnection($size);
     }
 
     /**
      * This function init neighbors for the starting point.
      *
-     * @param int $size
-     * @return Set
+     * @param Game $game
+     * @return array
      */
-    public function getStartNeighbors(int $size)
+    public function getStartNeighbors(Game $game)
     {
         $neighbors = [];
-        foreach (range(0, $size - 1) as $i) {
-            $neighbors[] = (sprintf('0,%s', $i));
+        foreach (range(0, $game->getSize() - 1) as $y) {
+            if ($game->hasStone(0, $y)) {
+                $neighbors[] = (sprintf('0,%s', $y));
+            }
         }
 
         return ['start' => $neighbors];
@@ -116,75 +112,21 @@ class Graph
     /**
      * This function init neighbors for the ending point.
      *
-     * @param int $size
-     * @return Set
-     */
-    public function getEndNeighbors(int $size)
-    {
-        $set = new Set();
-
-        foreach (range(0, $size - 1) as $i) {
-            $set->add(sprintf('%s,%s', $i, $size));
-        }
-
-        return $set;
-    }
-
-    /**
      * @param Game $game
-     * @param $stone
+     * @return array
      */
-    public function buildConnection(Game $game, $stone): void
+    public function getEndNeighbors(Game $game): array
     {
-        $connection = (new Connection())->loadWithCoords($stone['x'], $stone['y'], $game);
-        if (null !== $connection->getNeighbors()) {
-            $this->connections->add($connection);
+        $neighbors = [];
+        $limit = $game->getSize() - 1;
+
+        foreach (range(0, $limit) as $y) {
+            if ($game->hasStone($limit, $y)) {
+                $neighbors[sprintf('%s,%s', $limit, $y)] = 'end';
+            }
         }
-    }
 
-    /**
-     * @param $size
-     */
-    public function buildStartConnection($size): void
-    {
-        $neighbors = $this->getStartNeighbors($size);
-        $this->buildDefinedConnection('start', $neighbors);
-    }
-
-    /**
-     * @param $size
-     */
-    public function buildEndConnection($size): void
-    {
-        $neighbors = $this->getEndNeighbors($size);
-        $this->buildDefinedConnection('end', $neighbors);
-    }
-
-    /**
-     * @param string $point
-     * @param Set $neighbors
-     */
-    public function buildDefinedConnection(string $point, Set $neighbors): void
-    {
-        $connection = new Connection();
-        $connection->loadWithData($point, $neighbors);
-        $this->connections->add($connection);
-    }
-
-    /**
-     * @return Set
-     */
-    public function getConnections(): Set
-    {
-        return $this->connections;
-    }
-
-    /**
-     * @param Set $connections
-     */
-    public function setConnections(Set $connections): void
-    {
-        $this->connections = $connections;
+        return $neighbors;
     }
 
 
